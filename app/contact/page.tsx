@@ -2,16 +2,14 @@ export default function Contact() {
   return (
     <section className="min-h-screen bg-white dark:bg-zinc-900 text-black dark:text-white px-6 py-20 flex items-center justify-center">
       <div className="w-full max-w-3xl space-y-12">
-       
         <div className="text-center space-y-4">
           <h1 className="text-4xl font-bold">Get in Touch</h1>
           <p className="text-zinc-600 dark:text-zinc-300 text-lg">
             Have questions, feedback, or just want to say hello? Fill out the
-            form below and I'll get back to you as soon as possible.
+            form below and I&apos;ll get back to you as soon as possible.
           </p>
         </div>
 
-       
         <form className="space-y-6 bg-zinc-50 dark:bg-zinc-800 p-6 rounded-xl shadow-xl border border-zinc-200 dark:border-zinc-700">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>

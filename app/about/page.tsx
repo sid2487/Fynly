@@ -41,7 +41,7 @@ export default function About() {
         <div className="mt-16 space-y-6">
           <h2 className="text-3xl font-bold">About Me</h2>
           <p className="text-base sm:text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">
-            👋 Hey! I'm{" "}
+            👋 Hey! I&appos;m{" "}
             <span className="font-semibold text-indigo-600">
               Siddharth Mishra
             </span>
@@ -54,7 +54,7 @@ export default function About() {
             the overwhelm of traditional tools.
           </p>
           <p className="text-base sm:text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">
-            Check out my portfolio and see what else I've built 👉{" "}
+            Check out my portfolio and see what else I&appos;ve built 👉{" "}
             <a
               href="https://portfolio-vn4i.vercel.app/"
               target="_blank"
