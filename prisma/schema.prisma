@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String            @id @default(uuid())
+  clerkId          String            @unique
+  email            String            @unique
+  createdAt        DateTime          @default(now())
+  plans            CreatePlan[]
+  expenses         Expenses[]
+  plannedExpenses  PlannedExpense[]  // ✅ User ↔ PlannedExpense
+}
+
+model CreatePlan {
+  id               String            @id @default(uuid())
+  month            String            
+  fromDate         DateTime
+  toDate           DateTime
+  totalBudget      Float
+  expenses         Expenses[]
+  plannedExpenses  PlannedExpense[]  // ✅ Plan ↔ PlannedExpense
+  userId           String
+  user             User              @relation(fields: [userId], references: [id])
+  createdAt        DateTime          @default(now())
+}
+
+model Expenses {
+  id            String            @id @default(uuid())
+  category      String
+  amount        Float
+  note          String?
+  date          DateTime          @default(now())
+  userId        String
+  user          User              @relation(fields: [userId], references: [id])
+  planId        String?
+  plan          CreatePlan?       @relation(fields: [planId], references: [id])
+  createdAt     DateTime          @default(now())
+}
+
+model PlannedExpense {
+  id            String        @id @default(uuid())
+  category      String
+  amount        Float
+  planId        String
+  plan          CreatePlan    @relation(fields: [planId], references: [id], onDelete: Cascade)
+  userId        String         // ✅ add this
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime      @default(now())
+}

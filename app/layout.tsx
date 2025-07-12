@@ -20,9 +20,10 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={`antialiased`}>
-      <Navbar />
+          <Navbar />
+          <div className="h-10" />
           {children}
-          </body>
+        </body>
       </html>
     </ClerkProvider>
   );

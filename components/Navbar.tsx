@@ -7,6 +7,8 @@ import { FiMenu, FiX } from "react-icons/fi";
 import { useTheme } from "@/app/hooks/useTheme";
 import { MdOutlineLightMode, MdDarkMode } from "react-icons/md";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +16,8 @@ export default function Navbar() {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const { toggleTheme, theme } = useTheme();
+
+  const router = useRouter();
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-md">
@@ -24,17 +28,23 @@ export default function Navbar() {
             src={logo}
             alt="Logo"
             className="object-cover w-full h-full rounded-full border-2 border-white/30 shadow-sm"
+            onClick={() => router.push("/")}
           />
         </div>
 
         {/* Desktop Nav Links */}
         <ul className="hidden md:flex gap-6 text-sm md:text-base font-medium text-gray-700">
-          {["Home", "About", "Pricing", "Contact"].map((link) => (
+          {[
+            { label: "Home", path: "/" },
+            { label: "About", path: "/about" },
+            { label: "Pricing", path: "/pricing" },
+            { label: "Contact", path: "/contact" },
+          ].map(({ label, path }) => (
             <li
-              key={link}
-              className="hover:text-indigo-600 cursor-pointer transition"
+              key={label}
+              className="hover:text-indigo-600 transition cursor-pointer"
             >
-              {link}
+              <Link href={path}>{label}</Link>
             </li>
           ))}
         </ul>
@@ -77,13 +87,18 @@ export default function Navbar() {
       {/* Mobile Dropdown Menu */}
       {isOpen && (
         <ul className="flex flex-col gap-4 px-6 py-4 md:hidden text-gray-700 bg-white/95 shadow-md">
-          {["Home", "About", "Pricing", "Contact"].map((link) => (
+          {[
+            { label: "Home", path: "/" },
+            { label: "About", path: "/about" },
+            { label: "Pricing", path: "/pricing" },
+            { label: "Contact", path: "/contact" },
+          ].map(({ label, path }) => (
             <li
-              key={link}
+              key={label}
               className="hover:text-indigo-600 cursor-pointer transition"
               onClick={toggleMenu}
             >
-              {link}
+              <Link href={path}>{label}</Link>
             </li>
           ))}
         </ul>
