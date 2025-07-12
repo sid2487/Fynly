@@ -74,15 +74,19 @@ npm run dev
 
 👨‍💼 Shareable plans with accountability partners
 
-📸 Screenshots
-<img width="1906" height="965" alt="Screenshot from 2025-07-12 19-49-44" src="https://github.com/user-attachments/assets/592a96c3-5db3-41c7-994d-5937d2c4f008" />
+## 📸 Screenshots
 
-<img width="1906" height="965" alt="Screenshot from 2025-07-12 19-50-01" src="https://github.com/user-attachments/assets/bf9cf9cb-12fb-4a37-909f-c48819764e73" />
+### 🧭 Dashboard Overview
+![Dashboard](./public/screens/dashboard.png)
 
-<img width="1906" height="965" alt="Screenshot from 2025-07-12 19-50-18" src="https://github.com/user-attachments/assets/b93a383c-891c-49b9-a7d6-db7df3be9185" />
+### 📅 Plan Creation
+![Create Plan](./public/screens/create-plan.png)
 
-<img width="1906" height="965" alt="Screenshot from 2025-07-12 19-50-38" src="https://github.com/user-attachments/assets/b5e27ea1-b74c-48f7-af31-735c98705ff2" />
+### 📊 Expense Breakdown
+![Breakdown](./public/screens/breakdown.png)
 
+### ➕ Adding Transactions
+![Add Expense](./public/screens/add-expense.png)
 
 
 
