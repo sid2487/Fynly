@@ -41,6 +41,27 @@ Fynly is a **personal expense planner and tracker** that helps you manage your m
 
 ---
 
+## 📸 Screenshots
+## 📸 Screenshots
+
+### 🧭 Landing Page
+<img width="1906" height="965" alt="Screenshot from 2025-07-12 19-49-44" src="https://github.com/user-attachments/assets/2c812780-27d7-454c-a8d2-8e888ac5c725" />
+
+
+### 📅 Plan Creation
+<img width="1906" height="965" alt="Screenshot from 2025-07-12 19-50-01" src="https://github.com/user-attachments/assets/cd2ac5ac-c858-4a81-84d0-07660a011e66" />
+
+
+
+### 📊 Expense Breakdown
+<img width="1906" height="965" alt="Screenshot from 2025-07-12 19-50-18" src="https://github.com/user-attachments/assets/570170eb-c903-461f-afdb-3f162c23014c" />
+
+
+### About
+<img width="1906" height="965" alt="Screenshot from 2025-07-12 19-50-38" src="https://github.com/user-attachments/assets/5d47720a-47a6-4bf4-919d-369347f188ed" />
+
+
+
 ## 🚀 Getting Started Locally
 
 First, clone the repo and install dependencies:
@@ -62,7 +83,6 @@ npm run dev
 
 
 
-
 🧠 Future Roadmap
 🤖 AI-generated financial plans
 
@@ -73,24 +93,3 @@ npm run dev
 📤 Export reports as PDF/CSV
 
 👨‍💼 Shareable plans with accountability partners
-
-## 📸 Screenshots
-
-### 🧭 Dashboard Overview
-![Dashboard](./public/screens/dashboard.png)
-
-### 📅 Plan Creation
-![Create Plan](./public/screens/create-plan.png)
-
-### 📊 Expense Breakdown
-![Breakdown](./public/screens/breakdown.png)
-
-### ➕ Adding Transactions
-![Add Expense](./public/screens/add-expense.png)
-
-
-
-
-
-
-
