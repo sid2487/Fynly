@@ -42,7 +42,6 @@ Fynly is a **personal expense planner and tracker** that helps you manage your m
 ---
 
 ## 📸 Screenshots
-## 📸 Screenshots
 
 ### 🧭 Landing Page
 <img width="1906" height="965" alt="Screenshot from 2025-07-12 19-49-44" src="https://github.com/user-attachments/assets/2c812780-27d7-454c-a8d2-8e888ac5c725" />
