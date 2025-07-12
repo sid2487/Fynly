@@ -1,3 +1,4 @@
+import Branding from "@/components/Branding";
 import Footer from "@/components/Footer";
 import GetStarted from "@/components/GetStarted";
 import Hero from "@/components/Hero";
@@ -8,6 +9,7 @@ export default function Page(){
   return (
     <>
       <Layout>
+        <Branding />
         <Hero />
         <GetStarted />
         <Card />
