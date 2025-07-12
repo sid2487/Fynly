@@ -1,13 +1,14 @@
 "use client";
+
 import Image from "next/image";
-import logo from "../public/logo.jpeg"
+import Link from "next/link"; // ✅ import Link
+import logo from "../public/logo.jpeg";
 import { FaTwitter, FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa6";
 
 export default function Footer() {
   return (
     <footer className="w-full bg-gray-100 dark:bg-neutral-900 text-gray-700 dark:text-gray-300 py-10 px-4 md:px-10">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-        {/* Logo + Description */}
         <div>
           <div className="w-[100px] h-[100px]">
             <Image
@@ -22,28 +23,48 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Navigation Links */}
+        {/* ✅ Quick Links with Next.js routing */}
         <div>
           <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">
             Quick Links
           </h3>
           <ul className="space-y-2 text-sm">
-            <li className="hover:text-indigo-600 transition cursor-pointer">
-              Home
+            <li>
+              <Link
+                href="/"
+                className="hover:text-indigo-600 transition cursor-pointer"
+              >
+                Home
+              </Link>
             </li>
-            <li className="hover:text-indigo-600 transition cursor-pointer">
-              About
+            <li>
+              <Link
+                href="/about"
+                className="hover:text-indigo-600 transition cursor-pointer"
+              >
+                About
+              </Link>
             </li>
-            <li className="hover:text-indigo-600 transition cursor-pointer">
-              Pricing
+            <li>
+              <Link
+                href="/pricing"
+                className="hover:text-indigo-600 transition cursor-pointer"
+              >
+                Pricing
+              </Link>
             </li>
-            <li className="hover:text-indigo-600 transition cursor-pointer">
-              Contact
+            <li>
+              <Link
+                href="/contact"
+                className="hover:text-indigo-600 transition cursor-pointer"
+              >
+                Contact
+              </Link>
             </li>
           </ul>
         </div>
 
-        {/* Social Icons */}
+        {/* Social Media */}
         <div>
           <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">
             Connect with us
@@ -85,7 +106,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom Line */}
+      {/* Footer Note */}
       <div className="border-t border-gray-300 dark:border-gray-700 mt-10 pt-6 text-center text-sm">
         © {new Date().getFullYear()} Finly. All rights reserved.
       </div>

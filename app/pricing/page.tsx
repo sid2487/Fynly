@@ -2,7 +2,7 @@ export default function PricingPage() {
   const plans = [
     {
       title: "Free",
-      price: "₹0",
+      price: "$0",
       description: "Perfect for individuals getting started with budgeting.",
       features: [
         "Track income & expenses",
@@ -13,13 +13,14 @@ export default function PricingPage() {
     },
     {
       title: "Pro",
-      price: "₹299/month",
+      price: "$5",
       description: "Ideal for serious budgeters who want to go deeper.",
       features: [
         "Unlimited plans",
-        "Expense breakdown & analysis",
+        "Expense breakdown & analysis using AI",
         "Priority support",
         "Export data",
+        
       ],
       highlight: true,
     },
@@ -29,7 +30,7 @@ export default function PricingPage() {
     <section className="min-h-screen pt-24 pb-16 px-6 bg-gradient-to-br from-zinc-50 to-white dark:from-zinc-900 dark:to-zinc-950">
       <div className="max-w-5xl mx-auto text-center space-y-6">
         <h1 className="text-4xl font-extrabold dark:text-white">
-          Simple, transparent pricing
+          Simple, transparent pricing(working on it)
         </h1>
         <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
           Choose the plan that fits your budgeting needs best.
