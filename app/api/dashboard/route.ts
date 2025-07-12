@@ -29,12 +29,18 @@ export async function GET() {
     spentMap[tx.category] = (spentMap[tx.category] || 0) + tx.amount;
   });
 
-  const breakdown = plan.plannedExpenses.map((item) => ({
+  const breakdown: {
+    category: string;
+    planned: number;
+    spent: number;
+    remaining: number;
+  }[] = plan.plannedExpenses.map((item) => ({
     category: item.category,
     planned: item.amount,
     spent: spentMap[item.category] || 0,
     remaining: item.amount - (spentMap[item.category] || 0),
   }));
+
 
   const totalSpent = expenses.reduce((sum, tx) => sum + tx.amount, 0);
   const remainingBudget = plan.totalBudget - totalSpent;

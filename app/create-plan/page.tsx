@@ -46,7 +46,6 @@ export default function CreatePlan() {
   const router = useRouter();
 
   const addExpense = () => {
-    const name = newExpenseCategory.trim();
     const amount = parseFloat(newExpenseAmount);
 
     if (
@@ -95,8 +94,12 @@ export default function CreatePlan() {
 
       alert("Plan created Successfully");
       router.push("/dashboard");
-    } catch (error: any) {
-      alert(error.message);
+    } catch (error: unknown) {
+      if(error instanceof Error){
+        alert(error.message);
+      } else{
+        alert("An unexpected error occurred");
+      }
     } finally {
       setIsCreating(false);
     }

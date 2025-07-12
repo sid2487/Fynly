@@ -6,7 +6,41 @@ import { useEffect, useState } from "react"
 
 export default function Dashboard(){
 
-    const [data, setData] = useState<any>(null);
+  type Plan = {
+    id: string;
+    month: string;
+    totalBudget: number;
+    fromDate: string;
+    toDate: string;
+  };
+
+  type BreakdownItem = {
+    category: string;
+    planned: number;
+    spent: number;
+    remaining: number;
+  };
+
+  type Transaction = {
+    id: string;
+    category: string;
+    amount: number;
+    note?: string | null;
+    date: string;
+  };
+
+  type DashboardData = {
+    hasPlan: boolean;
+    plan: Plan;
+    breakdown: BreakdownItem[];
+    totalSpent: number;
+    remainingBudget: number;
+    transactions: Transaction[];
+  };
+  
+
+  const [data, setData] = useState<DashboardData | null>(null);
+
     const [category, setCategory] = useState("");
     const [amount, setAmount] = useState("");
     const [note, setNote] = useState("");
@@ -14,6 +48,7 @@ export default function Dashboard(){
     const [isAdding, setIsAdding] = useState(false);
 
     const router = useRouter();
+    
 
     const fetchDashboard = async () => {
       const res = await fetch("/api/dashboard");
@@ -32,6 +67,7 @@ export default function Dashboard(){
     }, []);
 
     const handleAddExpenses = async () => {
+        if (!data) return;
         setIsAdding(true);
       const res = await fetch("/api/expense", {
         method: "POST",
@@ -80,7 +116,7 @@ export default function Dashboard(){
 
         <h2 className="text-xl font-semibold mt-6">Breakdown</h2>
         <ul className="space-y-2">
-          {data.breakdown.map((item: any) => (
+          {data.breakdown.map((item: BreakdownItem) => (
             <li key={item.category} className="border p-2 rounded">
               <div className="flex justify-between">
                 <span>{item.category}</span>
@@ -134,7 +170,7 @@ export default function Dashboard(){
 
         <h2 className="text-xl font-semibold mt-6">Transactions</h2>
         <ul className="space-y-1 text-sm">
-          {data.transactions.map((tx: any) => (
+          {data.transactions.map((tx: Transaction) => (
             <li key={tx.id} className="border-b pb-1">
               ₹{tx.amount} on {tx.category} – {tx.note || "No note"} (
               {new Date(tx.date).toLocaleDateString()})
