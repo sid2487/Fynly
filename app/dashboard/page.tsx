@@ -57,7 +57,7 @@ export default function Dashboard(){
       return (
         <div className="min-h-screen flex flex-col justify-center items-center space-y-4">
           <h2 className="text-2xl font-bold">No Plan Found</h2>
-          <p className="text-lg">You haven't created a plan yet.</p>
+          <p className="text-lg">You have not created a plan yet.</p>
           <button
             onClick={() => router.push("/create-plan")}
             className="bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 transition"
