@@ -1,12 +1,12 @@
-import p1 from "../public/p1.jpg"
-import p3 from "../public/p3.jpg"
-import o from "../public/o.jpg"
-import p4 from "../public/p4.jpg"
-import p5 from "../public/p5.jpg"
-import p8 from "../public/p8.jpg"
-import p6 from "../public/p6.jpg"
-import p7 from "../public/p7.jpg"
-import Image from "next/image"
+import p1 from "../public/p1.jpg";
+import p3 from "../public/p3.jpg";
+import o from "../public/o.jpg";
+import p4 from "../public/p4.jpg";
+import p5 from "../public/p5.jpg";
+import p8 from "../public/p8.jpg";
+import p6 from "../public/p6.jpg";
+import p7 from "../public/p7.jpg";
+import Image from "next/image";
 
 export default function Card() {
   const reviews = [
@@ -14,56 +14,56 @@ export default function Card() {
       name: "Agusto Lee",
       time: "2 weeks ago",
       review:
-        "This website is great and I can't even express in words how much time and money it saved me. Earlier I spent a lot but couldn’t track it. Now I can finally see where my money is going.",
+        "Fynly gave me clarity over my spending habits. I finally know where my money goes each month.",
       image: p1,
     },
     {
       name: "Maria Gomez",
       time: "1 week ago",
       review:
-        "Loved the simplicity and clarity! Helps me track my expenses effortlessly.",
+        "Clean UI, smooth experience, and most importantly, it actually helps me budget better.",
       image: o,
     },
     {
-      name: "John Doe",
+      name: "Lily",
       time: "5 days ago",
       review:
-        "Super intuitive and a great UI. Budget tracking has never been this easy.",
+        "Love how intuitive this is! I didn’t need a tutorial. Everything just works beautifully.",
       image: p3,
     },
     {
       name: "Lisa Ray",
       time: "3 days ago",
       review:
-        "A game-changer for my financial discipline. Everything is visualized perfectly.",
+        "Helps me plan ahead and keep track of both essentials and extras. Highly recommended!",
       image: p4,
     },
     {
-      name: "Lisa Ray",
+      name: "Isabella",
       time: "3 days ago",
       review:
-        "A game-changer for my financial discipline. Everything is visualized perfectly.",
+        "I’ve tried many budgeting tools, but Fynly is by far the easiest to stick with.",
       image: p5,
     },
     {
-      name: "Lisa Ray",
+      name: "Lucas",
       time: "3 days ago",
       review:
-        "A game-changer for my financial discipline. Everything is visualized perfectly.",
+        "From day one, it made budgeting feel less like a chore. Great job!",
       image: p8,
     },
     {
-      name: "Lisa Ray",
+      name: "Sophia",
       time: "3 days ago",
       review:
-        "A game-changer for my financial discipline. Everything is visualized perfectly.",
+        "I never realized how much I was overspending until I started using Fynly.",
       image: p6,
     },
     {
-      name: "Lisa Ray",
+      name: "Isaac",
       time: "3 days ago",
       review:
-        "A game-changer for my financial discipline. Everything is visualized perfectly.",
+        "The perfect tool to build better money habits. I check it daily now.",
       image: p7,
     },
   ];
@@ -74,14 +74,12 @@ export default function Card() {
         Reviews from Our Users
       </h1>
 
-      {/* Grid Layout */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {reviews.map((user, idx) => (
           <div
             key={idx}
             className="bg-white dark:bg-neutral-900 rounded-xl shadow-md p-4 space-y-3 border border-gray-100 dark:border-neutral-700 h-full"
           >
-            {/* User Info */}
             <div className="flex items-center gap-3">
               <div className="w-20 h-20">
                 <Image
@@ -92,17 +90,14 @@ export default function Card() {
               </div>
               <div>
                 <h2 className="text-base font-semibold">{user.name}</h2>
-                <p className="text-xs text-gray-700 dark:text-gray-300">{user.time}</p>
+                <p className="text-xs text-gray-700 dark:text-gray-300">
+                  {user.time}
+                </p>
               </div>
             </div>
 
-            {/* Review Text */}
             <p className="text-sm text-gray-700 dark:text-gray-300 italic">
-              “
-              {user.review.length > 100
-                ? user.review.slice(0, 100) + "..."
-                : user.review}
-              ”
+              “{user.review}”
             </p>
           </div>
         ))}
