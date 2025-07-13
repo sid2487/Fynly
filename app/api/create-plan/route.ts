@@ -28,6 +28,17 @@ export async function POST(req: NextRequest) {
     expenses: ExpenseInput[];
   } = body;
 
+   const totalPlanned = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
+
+   if (totalPlanned > Number(totalBudget)) {
+     return NextResponse.json(
+       {
+         message: `Your planned expenses (₹${totalPlanned}) exceed the total budget (₹${totalBudget})`,
+       },
+       { status: 400 }
+     );
+   }
+
   try {
     const plan = await prisma.createPlan.create({
       data: {

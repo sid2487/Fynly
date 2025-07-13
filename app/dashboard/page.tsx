@@ -73,7 +73,7 @@ export default function Dashboard(){
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          category,
+          category: category.trim().toLowerCase(),
           amount,
           note,
           planId: data.plan.id,
@@ -112,7 +112,16 @@ export default function Dashboard(){
 
         <p className="text-lg">Total Budget: ₹{data.plan.totalBudget}</p>
         <p>Total Spent: ₹{data.totalSpent}</p>
-        <p>Remaining: ₹{data.remainingBudget}</p>
+        <p>
+          Remainig:{" "}
+          <span
+            className={
+              data.remainingBudget < 0 ? "text-red-600" : "text-green-600"
+            }
+          >
+            ₹{data.remainingBudget}
+          </span>
+        </p>
 
         <h2 className="text-xl font-semibold mt-6">Breakdown</h2>
         <ul className="space-y-2">
@@ -122,7 +131,13 @@ export default function Dashboard(){
                 <span>{item.category}</span>
                 <span>
                   ₹{item.spent} / ₹{item.planned} (
-                  <span className="text-green-600">₹{item.remaining} left</span>
+                  <span
+                    className={
+                      item.remaining < 0 ? "text-red-600" : "text-green-600"
+                    }
+                  >
+                    ₹{item.remaining} {item.remaining < 0 ? "over" : "left"}
+                  </span>
                   )
                 </span>
               </div>
@@ -160,11 +175,7 @@ export default function Dashboard(){
               isAdding ? "opacity-70 cursor-not-allowed" : ""
             }`}
           >
-            {isAdding ? (
-              <Loader2 className="animate-spin h-5 w-5" />
-            ) : (
-              "Add"
-            )}
+            {isAdding ? <Loader2 className="animate-spin h-5 w-5" /> : "Add"}
           </button>
         </div>
 

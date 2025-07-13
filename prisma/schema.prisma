@@ -14,7 +14,7 @@ model User {
   createdAt        DateTime          @default(now())
   plans            CreatePlan[]
   expenses         Expenses[]
-  plannedExpenses  PlannedExpense[]  // ✅ User ↔ PlannedExpense
+  plannedExpenses  PlannedExpense[] 
 }
 
 model CreatePlan {
@@ -24,7 +24,7 @@ model CreatePlan {
   toDate           DateTime
   totalBudget      Float
   expenses         Expenses[]
-  plannedExpenses  PlannedExpense[]  // ✅ Plan ↔ PlannedExpense
+  plannedExpenses  PlannedExpense[]  
   userId           String
   user             User              @relation(fields: [userId], references: [id])
   createdAt        DateTime          @default(now())
@@ -49,7 +49,7 @@ model PlannedExpense {
   amount        Float
   planId        String
   plan          CreatePlan    @relation(fields: [planId], references: [id], onDelete: Cascade)
-  userId        String         // ✅ add this
+  userId        String         
   user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt     DateTime      @default(now())
 }

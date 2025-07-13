@@ -10,7 +10,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
-
 const months = [
   "January",
   "February",
@@ -41,27 +40,39 @@ export default function CreatePlan() {
   const [toDate, setToDate] = useState("");
   const [totalBudget, setTotalBudget] = useState("");
   const [isCreating, setIsCreating] = useState(false);
-
+  const [tempBudgetError, setTempBudgetError] = useState(false);
+  const [inputExceedsBudget, setInputExceedsBudget] = useState(false);
 
   const router = useRouter();
 
   const addExpense = () => {
+    const category = newExpenseCategory.trim().toLowerCase();
     const amount = parseFloat(newExpenseAmount);
 
-    if (
-      newExpenseCategory.trim() &&
-      !expenses.some((e) => e.category === newExpenseCategory.trim()) &&
-      !isNaN(amount) &&
-      amount > 0
-    ) {
-      setExpenses((prev) => [
-        ...prev,
-        { category: newExpenseCategory.trim(), amount },
-      ]);
+    const isValidCategory = category !== "";
+    const isUnique = !expenses.some(
+      (e) => e.category.trim().toLowerCase() === category
+    );
+    const isValidAmount = !isNaN(amount) && amount > 0;
+
+    const totalBudgetNumber = Number(totalBudget);
+    const currentTotal = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
+    const willExceedBudget =
+      totalBudget !== "" && currentTotal + amount > totalBudgetNumber;
+
+    if (isValidCategory && isUnique && isValidAmount) {
+      if (willExceedBudget) {
+        setTempBudgetError(true);
+        return;
+      }
+
+      setExpenses((prev) => [...prev, { category, amount }]);
       setNewExpenseCategory("");
       setNewExpenseAmount("");
+      setTempBudgetError(false);
+      setInputExceedsBudget(false);
     }
-  }; 
+  };
 
   const removeExpense = (category: string) => {
     setExpenses((prev) => prev.filter((e) => e.category !== category));
@@ -89,7 +100,7 @@ export default function CreatePlan() {
         }),
       });
 
-      const text = await res.text(); 
+      const text = await res.text();
       const data = text ? JSON.parse(text) : null;
 
       if (!res.ok) throw new Error(data?.message || "Something went wrong");
@@ -106,8 +117,16 @@ export default function CreatePlan() {
       setIsCreating(false);
     }
   };
-  
-  
+
+  const totalPlanned = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
+  const pendingAmount = parseFloat(newExpenseAmount);
+  const totalBudgetNumber = Number(totalBudget);
+  const futureTotal =
+    totalPlanned +
+    (!isNaN(pendingAmount) && pendingAmount > 0 ? pendingAmount : 0);
+
+  const isBudgetExceeded =
+    totalBudget !== "" && futureTotal > totalBudgetNumber;
 
   return (
     <div className="min-h-screen flex items-start justify-center pt-32 px-6">
@@ -166,7 +185,9 @@ export default function CreatePlan() {
             value={totalBudget}
             onChange={(e) => setTotalBudget(e.target.value)}
             placeholder="₹10000"
-            className="w-full border px-3 py-2 rounded-md bg-white dark:bg-zinc-800"
+            className={`w-full border px-3 py-2 rounded-md bg-white dark:bg-zinc-800 ${
+              isBudgetExceeded ? "border-red-500" : ""
+            }`}
           />
         </div>
 
@@ -186,20 +207,48 @@ export default function CreatePlan() {
             <input
               type="number"
               value={newExpenseAmount}
-              onChange={(e) => setNewExpenseAmount(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                setNewExpenseAmount(value);
+
+                const amount = parseFloat(value);
+                const currentTotal = expenses.reduce(
+                  (sum, e) => sum + Number(e.amount),
+                  0
+                );
+
+                if (
+                  totalBudget !== "" &&
+                  !isNaN(amount) &&
+                  amount > 0 &&
+                  currentTotal + amount > Number(totalBudget)
+                ) {
+                  setInputExceedsBudget(true);
+                } else {
+                  setInputExceedsBudget(false);
+                }
+
+                setTempBudgetError(false); // still reset old error
+              }}
               onKeyDown={handleKeyDown}
               placeholder="₹1000"
               className="w-full sm:w-[120px] border px-4 py-2 rounded-md bg-white dark:bg-zinc-800"
             />
+
             <button
               onClick={addExpense}
-              className="w-full sm:w-auto px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600"
+              disabled={inputExceedsBudget}
+              className={`w-full sm:w-auto px-4 py-2 rounded-md flex items-center justify-center ${
+                inputExceedsBudget
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-indigo-500 text-white hover:bg-indigo-600"
+              }`}
             >
               Add
             </button>
           </div>
 
-          {/* Render Expense List */}
+          {/* Expense List */}
           <ul className="mt-3 text-sm text-zinc-700 dark:text-zinc-300 space-y-2">
             {expenses.map((item, index) => (
               <li
@@ -222,13 +271,36 @@ export default function CreatePlan() {
           </ul>
         </div>
 
+        {/* Errors */}
+        {inputExceedsBudget && (
+          <div className="text-red-600 text-sm mt-1">
+            ⚠️ This expense would exceed your total budget.
+          </div>
+        )}
+
+        {tempBudgetError && (
+          <div className="text-red-600 bg-red-100 border border-red-400 p-2 rounded-md mt-2 text-sm">
+            ⚠️ Adding this expense would exceed your total budget. Not added.
+          </div>
+        )}
+
         {/* Action Buttons */}
         <div className="flex justify-between mt-4 flex-col sm:flex-row gap-3">
           <button
             onClick={handleCreatePlan}
-            disabled={isCreating}
+            disabled={
+              isCreating ||
+              isBudgetExceeded ||
+              tempBudgetError ||
+              inputExceedsBudget
+            }
             className={`w-full sm:w-auto px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 flex items-center justify-center min-w-[100px] ${
-              isCreating ? "opacity-70 cursor-not-allowed" : ""
+              isCreating ||
+              isBudgetExceeded ||
+              tempBudgetError ||
+              inputExceedsBudget
+                ? "opacity-70 cursor-not-allowed"
+                : ""
             }`}
           >
             {isCreating ? (

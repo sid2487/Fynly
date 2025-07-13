@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 
 export const getAuthUser = async () => {
-  const { userId } = await auth(); // Clerk's user ID
+  const { userId } = await auth(); 
   if (!userId) return null;
 
   let user = await prisma.user.findUnique({ where: { clerkId: userId } });
