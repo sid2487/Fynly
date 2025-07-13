@@ -72,10 +72,10 @@ export default function CreatePlan() {
   };
 
   const handleCreatePlan = async () => {
-    setIsCreating(true); 
+    setIsCreating(true);
 
     try {
-      const res = await fetch("api/create-plan", {
+      const res = await fetch("/api/create-plan", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -89,21 +89,24 @@ export default function CreatePlan() {
         }),
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Something went wrong");
+      const text = await res.text(); 
+      const data = text ? JSON.parse(text) : null;
+
+      if (!res.ok) throw new Error(data?.message || "Something went wrong");
 
       alert("Plan created Successfully");
       router.push("/dashboard");
     } catch (error: unknown) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         alert(error.message);
-      } else{
+      } else {
         alert("An unexpected error occurred");
       }
     } finally {
       setIsCreating(false);
     }
   };
+  
   
 
   return (
