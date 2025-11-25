@@ -23,7 +23,7 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* ✅ Quick Links with Next.js routing */}
+       
         <div>
           <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">
             Quick Links

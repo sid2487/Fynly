@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 
 const months = [
@@ -42,6 +42,9 @@ export default function CreatePlan() {
   const [isCreating, setIsCreating] = useState(false);
   const [tempBudgetError, setTempBudgetError] = useState(false);
   const [inputExceedsBudget, setInputExceedsBudget] = useState(false);
+  const [isCreatingAI , setIsCreatingAI] = useState(false);
+  const [persona, setPersona] = useState("");
+
 
   const router = useRouter();
 
@@ -82,7 +85,91 @@ export default function CreatePlan() {
     if (e.key === "Enter") addExpense();
   };
 
+  function getMonthIndex(name: string) {
+    return months.indexOf(name); // 0–11
+  }
+
+  const monthIndex = getMonthIndex(selectedMonth);
+  const year = new Date().getFullYear();
+
+  const from = new Date(year, monthIndex, 1); // first day of selected months
+  const to = new Date(year, monthIndex + 1, 0); // last dayof selected month(one day before the first dayof nextmonth)
+
+
+  const handleCreateAI = async () => {
+    if (selectedMonth === "Select Month") {
+      alert("Please select a month before generating an AI plan");
+      return;
+    }
+    if (selectedMonth === "Select Month") {
+      alert("Select a month first");
+      return;
+    }
+
+     if (!totalBudget.trim() || Number(totalBudget) <= 0) {
+       alert("Please enter a valid total budget before generating AI plan");
+       return;
+     }
+
+if (!persona) {
+  alert("Please select your category/profession");
+  return;
+}
+
+
+    setIsCreatingAI(true);
+
+    const monthIndex = months.indexOf(selectedMonth);
+    const year = new Date().getFullYear();
+
+    const fromDate = new Date(year, monthIndex, 1).toISOString().split("T")[0];
+    const toDate = new Date(year, monthIndex + 1, 0)
+      .toISOString()
+      .split("T")[0];
+
+    const res = await fetch("/api/create-plan", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ai: true,
+        month: selectedMonth,
+        fromDate,
+        toDate,
+        totalBudget: Number(totalBudget),
+        persona,
+      }),
+    });
+    
+    const data = await res.json();
+    if(res.ok){
+      alert("AI Plan Created");
+      router.push("/dashboard");
+    }else {
+      alert(data.message);
+    }
+    setIsCreatingAI(false);
+  }
+
   const handleCreatePlan = async () => {
+     if (selectedMonth === "Select Month") {
+       alert("Please select a month before generating the plan");
+       return;
+     }
+     if (selectedMonth === "Select Month") {
+       alert("Select a month first");
+       return;
+     }
+
+     if (!totalBudget.trim() || Number(totalBudget) <= 0) {
+       alert("Please enter a valid total budget before generating the plan");
+       return;
+     }
+
+     if (!persona) {
+       alert("Please select your category/profession");
+       return;
+     }
+
     setIsCreating(true);
 
     try {
@@ -118,6 +205,16 @@ export default function CreatePlan() {
     }
   };
 
+  useEffect(() => {
+    const idx = months.indexOf(selectedMonth);
+    if (idx >= 0) {
+      const y = new Date().getFullYear();
+      setFromDate(new Date(y, idx, 1).toISOString().split("T")[0]);
+      setToDate(new Date(y, idx + 1, 0).toISOString().split("T")[0]);
+    }
+  }, [selectedMonth]);
+
+
   const totalPlanned = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
   const pendingAmount = parseFloat(newExpenseAmount);
   const totalBudgetNumber = Number(totalBudget);
@@ -135,7 +232,10 @@ export default function CreatePlan() {
           Create Your Expense Plan
         </h1>
 
-        {/* Select Month Dropdown */}
+        <p className="text-sm text-center">
+          (Just Select month, toatal budget and persona with AI)
+        </p>
+
         <div>
           <label className="block text-sm mb-1 font-medium">Select Month</label>
           <DropdownMenu>
@@ -155,7 +255,6 @@ export default function CreatePlan() {
           </DropdownMenu>
         </div>
 
-        {/* Date Range */}
         <div className="flex gap-2 flex-col sm:flex-row">
           <div className="flex-1">
             <label className="block text-sm mb-1 font-medium">From</label>
@@ -177,7 +276,6 @@ export default function CreatePlan() {
           </div>
         </div>
 
-        {/* Total Budget */}
         <div>
           <label className="block text-sm mb-1 font-medium">Total Budget</label>
           <input
@@ -191,7 +289,25 @@ export default function CreatePlan() {
           />
         </div>
 
-        {/* Add Expense Section */}
+        <div>
+          <label className="block text-sm mb-1 font-medium">
+            Select Persona
+          </label>
+          <select
+            value={persona}
+            onChange={(e) => setPersona(e.target.value)}
+            className="w-full border px-3 py-2 rounded-md bg-white dark:bg-zinc-800"
+          >
+            <option value="">Select Category</option>
+            <option value="student">Student</option>
+            <option value="working professional">Working Professional</option>
+            <option value="business owner">Business Owner</option>
+            <option value="freelancer">Freelancer</option>
+            <option value="homemaker">Homemaker</option>
+            <option value="retired">Retired</option>
+          </select>
+        </div>
+
         <div>
           <label className="block text-sm mb-1 font-medium">Add Expense</label>
           <div className="flex flex-col sm:flex-row sm:items-center gap-1">
@@ -228,7 +344,7 @@ export default function CreatePlan() {
                   setInputExceedsBudget(false);
                 }
 
-                setTempBudgetError(false); // still reset old error
+                setTempBudgetError(false);
               }}
               onKeyDown={handleKeyDown}
               placeholder="₹1000"
@@ -248,7 +364,6 @@ export default function CreatePlan() {
             </button>
           </div>
 
-          {/* Expense List */}
           <ul className="mt-3 text-sm text-zinc-700 dark:text-zinc-300 space-y-2">
             {expenses.map((item, index) => (
               <li
@@ -274,22 +389,22 @@ export default function CreatePlan() {
         {/* Errors */}
         {inputExceedsBudget && (
           <div className="text-red-600 text-sm mt-1">
-            ⚠️ This expense would exceed your total budget.
+            This expense would exceed your total budget.
           </div>
         )}
 
         {tempBudgetError && (
           <div className="text-red-600 bg-red-100 border border-red-400 p-2 rounded-md mt-2 text-sm">
-            ⚠️ Adding this expense would exceed your total budget. Not added.
+            Adding this expense would exceed your total budget. Not added.
           </div>
         )}
 
-        {/* Action Buttons */}
         <div className="flex justify-between mt-4 flex-col sm:flex-row gap-3">
           <button
             onClick={handleCreatePlan}
             disabled={
               isCreating ||
+              isCreatingAI ||
               isBudgetExceeded ||
               tempBudgetError ||
               inputExceedsBudget
@@ -310,8 +425,16 @@ export default function CreatePlan() {
             )}
           </button>
 
-          <button className="w-full sm:w-auto px-4 py-2 border border-indigo-500 text-indigo-500 rounded-md hover:bg-indigo-50 dark:hover:bg-zinc-800">
-            Create with AI
+          <button
+            onClick={handleCreateAI}
+            disabled={isCreating || isCreatingAI}
+            className="w-full sm:w-auto px-4 py-2 border border-indigo-500 text-indigo-500 rounded-md hover:bg-indigo-50 dark:hover:bg-zinc-800"
+          >
+            {isCreatingAI ? (
+              <Loader2 className="animate-spin h-5 w-5" />
+            ) : (
+              "Create with AI"
+            )}
           </button>
         </div>
       </div>
