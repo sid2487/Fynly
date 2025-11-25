@@ -85,16 +85,6 @@ export default function CreatePlan() {
     if (e.key === "Enter") addExpense();
   };
 
-  function getMonthIndex(name: string) {
-    return months.indexOf(name); // 0–11
-  }
-
-  const monthIndex = getMonthIndex(selectedMonth);
-  const year = new Date().getFullYear();
-
-  const from = new Date(year, monthIndex, 1); // first day of selected months
-  const to = new Date(year, monthIndex + 1, 0); // last dayof selected month(one day before the first dayof nextmonth)
-
 
   const handleCreateAI = async () => {
     if (selectedMonth === "Select Month") {

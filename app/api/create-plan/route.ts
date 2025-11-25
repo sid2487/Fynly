@@ -70,7 +70,7 @@ RULES:
       ],
     });
 
-    planData = JSON.parse(aiRes.choices[0]?.message!.content!);
+    planData = JSON.parse(aiRes.choices[0].message.content!);
   } else {
     const { month, fromDate, toDate, totalBudget, expenses } = body;
     planData = { month, fromDate, toDate, totalBudget, expenses };
